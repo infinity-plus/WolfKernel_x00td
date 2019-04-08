@@ -72,6 +72,19 @@ other		:	2000MA
 static unsigned int charge_mode = 0;
 module_param(charge_mode, uint, S_IWUSR | S_IRUGO);
 
+/*
+adapter_ceeling_current	:	ICL VALUE
+0						:	2000MA
+1						:	2050MA
+2						:	2500MA
+3						:	2850MA
+4						:	3000MA
+5						:	1000MA
+other					:	2000MA
+*/
+static unsigned int adapter_ceeling_current = 0;
+module_param(adapter_ceeling_current, uint, S_IWUSR | S_IRUGO);
+
 extern struct smb_charger *smbchg_dev;
 extern struct timespec last_jeita_time;
 static struct alarm bat_alarm;
@@ -3995,11 +4008,31 @@ void asus_adapter_adc_work(struct work_struct *work)
 			__func__);
 
 	msleep(5);
-	CHG_TYPE_judge(smbchg_dev);
 
-	//max current allowed in device
-	usb_max_current = ICL_2000mA;
-
+	//setting max allowed current from adapter
+	switch (adapter_ceeling_current) {
+		case 0:
+			usb_max_current = ICL_2000mA;
+			break;
+		case 1:
+			usb_max_current = ICL_2050mA;
+			break;
+		case 2:
+			usb_max_current = ICL_2500mA;
+			break;
+		case 3:
+			usb_max_current = ICL_2850mA;;
+			break;
+		case 4:
+			usb_max_current = ICL_3000mA;
+			break;
+		case 5:
+			usb_max_current = ICL_1000mA;
+			break;
+		default:
+			usb_max_current = ICL_2000mA;
+			break;
+	}
 
 	rc = smblib_set_usb_suspend(smbchg_dev, 0);
 	if (rc < 0)
