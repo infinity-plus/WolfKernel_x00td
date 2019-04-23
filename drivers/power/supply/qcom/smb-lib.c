@@ -69,7 +69,7 @@ charge_mode	:	SMBCHG_FAST_CHG_CURRENT_VALUE
 4			:	3000MA
 other		:	2000MA
 */
-static unsigned int charge_mode = 0;
+static unsigned int charge_mode = 1;
 module_param(charge_mode, uint, S_IWUSR | S_IRUGO);
 
 /*
@@ -82,7 +82,7 @@ adapter_ceeling_current	:	ICL VALUE
 5						:	1000MA
 other					:	2000MA
 */
-static unsigned int adapter_ceeling_current = 0;
+static unsigned int adapter_ceeling_current = 2;
 module_param(adapter_ceeling_current, uint, S_IWUSR | S_IRUGO);
 
 extern struct smb_charger *smbchg_dev;
@@ -3957,6 +3957,8 @@ void asus_chg_flow_work(struct work_struct *work)
 	case DCP_CHARGER_BIT | QC_2P0_BIT:
 	case DCP_CHARGER_BIT:
 		/* reg=1370 */
+		set_icl = ICL_1500mA;
+
 		rc = smblib_read(smbchg_dev, USBIN_CURRENT_LIMIT_CFG_REG,
 					&USBIN_1_cc);
 		if (rc < 0)
