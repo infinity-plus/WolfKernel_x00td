@@ -10,7 +10,7 @@ do.modules=0
 do.cleanup=1
 do.cleanuponabort=0
 device.name1=X00T
-device.name2=X00Td
+device.name2=X00TD
 device.name3=
 device.name4=
 device.name5=
@@ -18,10 +18,13 @@ supported.versions=
 '; } # end properties
 
 # shell variables
-block=/dev/block/platform/omap/omap_hsmmc.0/by-name/boot;
+
+block=/dev/block/bootdevice/by-name/boot;
 is_slot_device=0;
 ramdisk_compression=auto;
-
+initd=/system/etc/init.d/;
+patch=/tmp/anykernel/patch;
+postboot = /vendor/bin/init.qcom.post_boot.sh
 
 ## AnyKernel methods (DO NOT CHANGE)
 # import patching functions/variables - see for reference
