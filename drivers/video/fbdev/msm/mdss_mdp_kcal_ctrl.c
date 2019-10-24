@@ -568,62 +568,16 @@ static DEVICE_ATTR(kcal_cont, S_IWUSR | S_IRUGO, kcal_cont_show,
 	kcal_cont_store);
 
 #ifdef CONFIG_KLAPSE
-void klapse_kcal_push(int r, int g, int b)
+void kcal_klapse_push(int r, int g, int b)
 {
-  lut_cpy->red = r;
+        lut_cpy->red = r;
 	lut_cpy->green = g;
 	lut_cpy->blue = b;
 
-	mdss_mdp_kcal_update_pcc(lut_cpy);
-}
-
-/* kcal_get_color() :
- * @param : 0 = red; 1 = green; 2 = blue;
- * @return : Value of color corresponding to @param, or 0 if not found
- */
-unsigned short kcal_get_color(unsigned short int code)
-{
-  if (code == 0)
-    return lut_cpy->red;
-  else if (code == 1)
-    return lut_cpy->green;
-  else if (code == 2)
-    return lut_cpy->blue;
-
-  return 0;
-}
-#endif
-
-static int mdss_mdp_kcal_update_queue(struct device *dev)
-{
-	struct kcal_lut_data *lut_data = dev_get_drvdata(dev);
-
-	if (lut_data->queue_changes) {
-		mdss_mdp_kcal_update_pcc(lut_data);
-		mdss_mdp_kcal_update_pa(lut_data);
-		mdss_mdp_kcal_update_igc(lut_data);
-		lut_data->queue_changes = false;
-	}
-
-	return 0;
-}
-
-#if defined(CONFIG_FB) && !defined(CONFIG_MMI_PANEL_NOTIFICATIONS)
-static int fb_notifier_callback(struct notifier_block *nb,
-	unsigned long event, void *data)
-{
-	int *blank;
-	struct fb_event *evdata = data;
-	struct kcal_lut_data *lut_data =
-		container_of(nb, struct kcal_lut_data, panel_nb);
-
-	if (evdata && evdata->data && event == FB_EVENT_BLANK) {
-		blank = evdata->data;
-		if (*blank == FB_BLANK_UNBLANK)
-			mdss_mdp_kcal_update_queue(&lut_data->dev);
-	}
-
-	return 0;
+        mdss_mdp_kcal_update_pcc(lut_cpy);
+	mdss_mdp_kcal_update_pa(lut_cpy);
+	mdss_mdp_kcal_update_igc(lut_cpy);
+	mdss_mdp_kcal_display_commit();
 }
 #endif
 
@@ -674,6 +628,10 @@ static int kcal_ctrl_probe(struct platform_device *pdev)
 		pr_err("%s: unable to register fb notifier\n", __func__);
 		return ret;
 	}
+#endif
+
+#ifdef CONFIG_KLAPSE
+	lut_cpy = lut_data;
 #endif
 
 #ifdef CONFIG_KLAPSE
