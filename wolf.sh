@@ -139,7 +139,7 @@ echo -e "$ZIPNAME zip can be found at $FINAL_ZIP";
 if [[ ${success} == true ]]; then
     echo -e "UPLOAD SUCCESSFUL";
 
-message="Wolf Kernel - nonEAS Version."
+message="Wolf Kernel - EAS Version."
 compatible="AOSP PIE/OREO"
 time="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds."
 
@@ -151,15 +151,13 @@ $time" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="
 ♔♔♔♔♔♔♔BUILD-DETAILS♔♔♔♔♔♔♔
 🖋️ Author     : vvrRockStar
-🛠️ Make-Type  : $MAKE_TYPE
-🗒️ Buld-Type  : 60Hz
+🛠️ Make-Type  : EAS
 ⌚ Build-Time : $time
 🗒️ Zip-Name   : $ZIPNAME
 "  -d chat_id="585730571"
 
 
 
-rm -rf ${ZIP_DIR}/${ZIPNAME}
 
 fi
 else
