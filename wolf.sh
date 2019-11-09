@@ -144,7 +144,7 @@ time="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds."
 
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Changelogs :
 $(git log --pretty=format:'%h : %s' -5)" -d chat_id=$CHAT_ID
-curl -F chat_id="585730571" -F document=@"${ZIP_DIR}/$ZIPNAME" -F caption="$message 
+curl -F chat_id=$CHAT_ID -F document=@"${ZIP_DIR}/$ZIPNAME" -F caption="$message 
 $time" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
 
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="
