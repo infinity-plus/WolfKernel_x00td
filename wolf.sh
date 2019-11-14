@@ -148,8 +148,7 @@ curl -F chat_id=$CHAT_ID -F document=@"${ZIP_DIR}/$ZIPNAME" -F caption="
 ♔♔♔♔♔♔♔BUILD-DETAILS♔♔♔♔♔♔♔
   Make-Type  : EAS(non-SAR)
 ⌚ Build-Time : $time
-$(git log --pretty=format:'%h : %s' -5)"
-" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
+$(git log --pretty=format:'%h : %s' -5)" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
 
 
 fi
