@@ -100,7 +100,8 @@ if [[ "$@" =~ "clean" ]]; then
 fi
 
 curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="#Awoo 
-Build Scheduled for $KERNELNAME Kernel " -d chat_id="-1001287030751"
+Build Scheduled for $KERNELNAME Kernel 
+Will be posted when testing is over.." -d chat_id="-1001287030751"
 ${MAKE} $DEFCONFIG;
 START=$(date +"%s");
 echo -e "Using ${JOBS} threads to compile"
@@ -142,21 +143,13 @@ if [[ ${success} == true ]]; then
 message="Wolf Kernel - EAS Version."
 time="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds."
 
-curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="Changelogs :
-$(git log --pretty=format:'%h : %s' -5)" -d chat_id=$CHAT_ID
-curl -F chat_id=$CHAT_ID -F document=@"${ZIP_DIR}/$ZIPNAME" -F caption="$message 
-$time" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
+curl -F chat_id=$CHAT_ID -F document=@"${ZIP_DIR}/$ZIPNAME" -F caption="
 
-curl -s -X POST https://api.telegram.org/bot$BOT_API_KEY/sendMessage -d text="
 ♔♔♔♔♔♔♔BUILD-DETAILS♔♔♔♔♔♔♔
-🖋️ Author     : vvrRockStar
-🛠️ Make-Type  : EAS
+  Make-Type  : EAS(non-SAR)
 ⌚ Build-Time : $time
-🗒️ Note       : If you want to confirm if the zip works or not, 
-               wait for authors to send a confirmation.
-"  -d chat_id=$CHAT_ID
-
-
+$(git log --pretty=format:'%h : %s' -5)"
+" https://api.telegram.org/bot$BOT_API_KEY/sendDocument
 
 
 fi
