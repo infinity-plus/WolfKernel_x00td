@@ -1,10 +1,5 @@
 [![Build Status](https://semaphoreci.com/api/v1/infinity-plus/wolfkernel-x00td/branches/eas/badge.svg)](https://semaphoreci.com/infinity-plus/wolfkernel-x00td)
 
-
-
-
-
-
 Linux kernel release 4.x <http://kernel.org/>
 
 These are the release notes for Linux version 4.  Read them carefully,
